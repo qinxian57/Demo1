@@ -10,6 +10,8 @@
 #include <QAction>
 #include <QIcon>
 
+#include <QStandardItemModel>
+
 namespace Ui {
 class MainWindow;
 }
@@ -28,6 +30,8 @@ public:
     QPointer<QAction> mShowMainAction;
     QPointer<QAction> mExitAppAction;
 
+    QStandardItemModel * objectModel;
+
     void initTrayIcon();
     void createTrayActions();
     void closeEvent ( QCloseEvent * e );
@@ -41,6 +45,8 @@ private slots:
     void on_actionDock_triggered(bool checked);
 
     void on_dockWidget_visibilityChanged(bool visible);
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

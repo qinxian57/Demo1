@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -10,8 +11,40 @@ MainWindow::MainWindow(QWidget *parent) :
     //托盘初始化
     initTrayIcon();
 
-    this->setCentralWidget(ui->listWidget);
+    this->setCentralWidget(ui->tableView);
     ui->dockWidget->setWidget(ui->treeWidget);
+
+    //初始化tableView
+
+    //设置大小
+    objectModel = new QStandardItemModel(4, 3);//4行2列
+    //选择这个model
+    ui->tableView->setModel(objectModel);
+    //隐藏左边那列
+    ui->tableView->verticalHeader()->hide();
+    //列宽
+    ui->tableView->setColumnWidth(0,30);
+    //整行选择
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    //设置标题
+    //objectModel->setHeaderData(0, Qt::Horizontal, tr("Label"));
+    //objectModel->setHeaderData(1, Qt::Horizontal, tr("Quantity"));
+    objectModel->setHorizontalHeaderLabels(QStringList() <<tr("姓名")<<tr("性别")<<tr("年龄"));
+
+
+    //添加数据
+    for(int j=0;j<2;j++)
+    {
+                //写id
+
+        objectModel->setItem(j, 0, new QStandardItem("张三"));
+        objectModel->setItem(j, 1, new QStandardItem("男"));
+        objectModel->setItem(j, 2, new QStandardItem("18"));
+    }
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -132,4 +165,26 @@ void MainWindow::on_actionDock_triggered(bool checked)
 void MainWindow::on_dockWidget_visibilityChanged(bool visible)
 {
     ui->actionDock->setChecked(visible);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    int row = objectModel->rowCount();
+    objectModel->insertRow(row, QModelIndex());
+    objectModel->setItem(row-1, 0, new QStandardItem("张三"));
+    objectModel->setItem(row-1, 1, new QStandardItem("男"));
+    objectModel->setItem(row-1, 2, new QStandardItem("18"));
+
+    //x是指定删除哪一行
+    //objectModel->removeRow(x);
+    //删除所有行
+    //objectModel->removeRows(0, objectModel->rowCount());
+
+
+    //    for (int row = 0; row < 4; ++row) {
+    //        for (int column = 0; column < 2; ++column) {
+    //            QModelIndex index = objectModel->index(row, column, QModelIndex());
+    //            objectModel->setData(index, QVariant((row+1) * (column+1)));
+    //        }
+    //    }
 }
