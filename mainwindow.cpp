@@ -11,36 +11,35 @@ MainWindow::MainWindow(QWidget *parent) :
     //托盘初始化
     initTrayIcon();
 
-    this->setCentralWidget(ui->tableView);
+    this->setCentralWidget(ui->verticalLayoutWidget);
     ui->dockWidget->setWidget(ui->treeWidget);
 
     //初始化tableView
-
+    objectModel = new QStandardItemModel();//4行2列
     //设置大小
-    objectModel = new QStandardItemModel(4, 3);//4行2列
-    //选择这个model
-    ui->tableView->setModel(objectModel);
-    //隐藏左边那列
-    ui->tableView->verticalHeader()->hide();
-    //列宽
-    ui->tableView->setColumnWidth(0,30);
-    //整行选择
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-
+    objectModel->setColumnCount(3);
     //设置标题
     //objectModel->setHeaderData(0, Qt::Horizontal, tr("Label"));
     //objectModel->setHeaderData(1, Qt::Horizontal, tr("Quantity"));
     objectModel->setHorizontalHeaderLabels(QStringList() <<tr("姓名")<<tr("性别")<<tr("年龄"));
+    //选择这个model
+    ui->tableView->setModel(objectModel);
+    //隐藏左侧表头
+    ui->tableView->verticalHeader()->hide();
+    //列宽
+    ui->tableView->setColumnWidth(0,100);
+    ui->tableView->setColumnWidth(1,100);
+    ui->tableView->setColumnWidth(2,100);
+    //整行选择
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 
     //添加数据
-    for(int j=0;j<2;j++)
+    for(int i=0; i<1; ++i)
     {
-                //写id
-
-        objectModel->setItem(j, 0, new QStandardItem("张三"));
-        objectModel->setItem(j, 1, new QStandardItem("男"));
-        objectModel->setItem(j, 2, new QStandardItem("18"));
+        objectModel->setItem(i, 0, new QStandardItem("zhangsan"));
+        objectModel->setItem(i, 1, new QStandardItem("man"));
+        objectModel->setItem(i, 2, new QStandardItem("18"));
     }
 
 
@@ -170,10 +169,10 @@ void MainWindow::on_dockWidget_visibilityChanged(bool visible)
 void MainWindow::on_pushButton_clicked()
 {
     int row = objectModel->rowCount();
-    objectModel->insertRow(row, QModelIndex());
-    objectModel->setItem(row-1, 0, new QStandardItem("张三"));
-    objectModel->setItem(row-1, 1, new QStandardItem("男"));
-    objectModel->setItem(row-1, 2, new QStandardItem("18"));
+    //objectModel->insertRow(idx+1, QModelIndex());
+    objectModel->setItem(row, 0, new QStandardItem("lisi"));
+    objectModel->setItem(row, 1, new QStandardItem("femal"));
+    objectModel->setItem(row, 2, new QStandardItem("18"));
 
     //x是指定删除哪一行
     //objectModel->removeRow(x);
